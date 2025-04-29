@@ -1,0 +1,2180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            min-height: 100vh;
+            padding: 10px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 30px 0;
+            background: transparent;
+            border-radius: 20px;
+            border: none;
+            box-shadow: none;
+            animation: headerFadeIn 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes headerFadeIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .header-content:hover {
+            transform: translateY(-2px);
+        }
+        .header-content:active {
+            transform: translateY(0);
+        }
+        .header-icon {
+            font-size: 32px;
+            background: linear-gradient(135deg, #1b4d3e 0%, #2ecc71 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 5px;
+        }
+        .header h1 {
+            font-size: clamp(32px, 5vw, 42px);
+            background: linear-gradient(135deg, #1b4d3e 0%, #2ecc71 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            padding: 0;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.9;
+        }
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #2ecc71 0%, #1b4d3e 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        .header:hover h1::after {
+            width: 100px;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #1b4d3e, #2ecc71, #1b4d3e);
+            border-radius: 21px;
+            z-index: -1;
+            filter: blur(20px);
+            opacity: 0.1;
+        }
+        @media (max-width: 768px) {
+            .header {
+                margin-bottom: 30px;
+                padding: 20px 0;
+            }
+            .header-content {
+                gap: 10px;
+            }
+            .header-icon {
+                font-size: 24px;
+            }
+            .header h1 {
+                font-size: clamp(24px, 4vw, 32px);
+            }
+            .header-subtitle {
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+            .header h1::after {
+                bottom: -8px;
+                width: 40px;
+            }
+            .header:hover h1::after {
+                width: 80px;
+            }
+        }
+        .close-btn {
+            position: fixed;
+            right: 30px;
+            top: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #1a365d;
+            cursor: pointer;
+            border: 2px solid rgba(26, 54, 93, 0.1);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.1),
+                0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+        .close-btn:hover {
+            background: #ffffff;
+            transform: translateY(-2px) rotate(90deg);
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.15),
+                0 2px 4px rgba(0, 0, 0, 0.1);
+            border-color: rgba(26, 54, 93, 0.2);
+            color: #2563eb;
+        }
+        .close-btn::before {
+            content: "✕";
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .close-btn {
+                right: 20px;
+                top: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+                border-radius: 10px;
+            }
+        }
+        .slider-container {
+            position: relative;
+            background: #808080;
+            padding: 60px;
+            border-radius: 15px;
+            margin: 0 auto;
+            width: 100%;
+            overflow: hidden;
+            max-width: 800px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .templates-slider {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+            transform: none !important;
+            overscroll-behavior: none;
+        }
+        .templates-slider::-webkit-scrollbar {
+            display: none;
+        }
+        .template-group {
+            flex: 0 0 100%;
+            display: flex;
+            gap: 20px;
+            scroll-snap-align: start;
+        }
+        .template-slide {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .template-card {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            position: relative;
+            cursor: pointer;
+            height: 250px;
+        }
+        .template-image {
+            width: 100%;
+            height: 200px;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            object-fit: cover;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .template-card.template-1:hover .template-image {
+            border-color: #4a90e2;
+        }
+        .template-card.template-2:hover .template-image {
+            border-color: #2ecc71;
+        }
+        .template-card.template-3:hover .template-image {
+            border-color: #e74c3c;
+        }
+        .template-card.template-4:hover .template-image {
+            border-color: #9b59b6;
+        }
+        .template-card.template-5:hover .template-image {
+            border-color: #f1c40f;
+        }
+        .template-card:active .template-image {
+            border-color: #4a90e2;
+        }
+        .template-title {
+            font-size: clamp(16px, 3vw, 20px);
+            color: white;
+            margin-top: 10px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            position: relative;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .template-card:hover .template-title {
+            transform: none;
+            color: rgba(255, 255, 255, 1);
+        }
+        .template-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            opacity: 0;
+            box-shadow: none;
+            pointer-events: none;
+        }
+        .template-card:hover::after {
+            opacity: 0;
+        }
+        .add-template-card {
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            height: 200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .add-template-card:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .add-template-icon {
+            font-size: 64px;
+            color: white;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        .add-template-card:hover .add-template-icon {
+            opacity: 1;
+        }
+        .nav-button {
+            position: absolute;
+            top: calc(50% - 30px);
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover {
+            background: white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        .nav-button.prev {
+            left: 10px;
+        }
+        .nav-button.next {
+            right: 10px;
+        }
+        .nav-button i {
+            font-size: 20px;
+            color: #333;
+        }
+        @media (max-width: 768px) {
+            .template-slide {
+                flex: 0 0 100%;
+            }
+            .slider-container {
+                padding: 40px;
+                min-height: 350px;
+            }
+        }
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        .template-actions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .template-card:hover .template-actions {
+            opacity: 1;
+            transform: translate(-50%, calc(-50% - 20px));
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .action-btn:hover {
+            background: white;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .preview-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            margin: 20px;
+        }
+
+        .preview-image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 10px;
+            padding: 20px;
+            background: transparent;
+        }
+
+        .watermark span {
+            content: 'Lurey_Creation@2025-26';
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            transform: rotate(-30deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            z-index: 2;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .preview-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .preview-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .preview-btn.reset-btn {
+            width: auto;
+            padding: 0 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .preview-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .preview-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .zoom-level {
+            color: white;
+            font-size: 14px;
+            margin: 0 10px;
+            min-width: 60px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .editor-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: none;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .editor-container.active {
+            display: flex;
+            flex-direction: column;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .editor-content {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .editor-form {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .preview-section {
+            flex: 1;
+            position: sticky;
+            top: 30px;
+            height: fit-content;
+            margin: 0;
+            padding: 30px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .preview-section img {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .editor-header.template-1-color {
+            border-bottom-color: #4a90e2;
+        }
+        
+        .editor-header.template-2-color {
+            border-bottom-color: #2ecc71;
+        }
+        
+        .editor-header.template-3-color {
+            border-bottom-color: #e74c3c;
+        }
+        
+        .editor-header.template-4-color {
+            border-bottom-color: #9b59b6;
+        }
+        
+        .editor-header.template-5-color {
+            border-bottom-color: #f1c40f;
+        }
+
+        .editor-title {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .editor-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #666;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .editor-close:hover {
+            color: #f44336;
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            transition: all 0.3s ease;
+            background: #f8f8f8;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .form-group input.template-1-color,
+        .form-group textarea.template-1-color {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.1);
+        }
+        
+        .form-group input.template-2-color,
+        .form-group textarea.template-2-color {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.1);
+        }
+        
+        .form-group input.template-3-color,
+        .form-group textarea.template-3-color {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 1px rgba(231, 76, 60, 0.1);
+        }
+        
+        .form-group input.template-4-color,
+        .form-group textarea.template-4-color {
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 1px rgba(155, 89, 182, 0.1);
+        }
+        
+        .form-group input.template-5-color,
+        .form-group textarea.template-5-color {
+            border-color: #f1c40f;
+            box-shadow: 0 0 0 1px rgba(241, 196, 15, 0.1);
+        }
+
+        .form-group input.template-1-color:focus,
+        .form-group textarea.template-1-color:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+        
+        .form-group input.template-2-color:focus,
+        .form-group textarea.template-2-color:focus {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+        
+        .form-group input.template-3-color:focus,
+        .form-group textarea.template-3-color:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+        
+        .form-group input.template-4-color:focus,
+        .form-group textarea.template-4-color:focus {
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2);
+        }
+        
+        .form-group input.template-5-color:focus,
+        .form-group textarea.template-5-color:focus {
+            border-color: #f1c40f;
+            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            gap: 20px;
+        }
+
+        .form-actions .left-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-actions .center-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-actions .right-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            min-width: 120px;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-delete {
+            background: #fff;
+            color: #dc3545;
+            border: 2px solid #dc3545;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 120px;
+            white-space: nowrap;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-delete i {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .btn-delete:hover {
+            background: #dc3545;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
+        }
+
+        .btn-delete:hover i {
+            animation: trashShake 0.5s ease;
+        }
+
+        @keyframes trashShake {
+            0% {
+                transform: rotate(0deg);
+            }
+            20% {
+                transform: rotate(-15deg);
+            }
+            40% {
+                transform: rotate(15deg);
+            }
+            60% {
+                transform: rotate(-10deg);
+            }
+            80% {
+                transform: rotate(10deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .btn-delete:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+            margin: 0;
+        }
+
+        .btn-primary {
+            background: #4a90e2;
+            color: white;
+            margin: 0;
+        }
+
+        .form-group .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: #f44336;
+        }
+
+        .form-group .error-text {
+            color: #f44336;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f8f8f8;
+        }
+
+        .tag {
+            background: #4a90e2;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag .remove {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .tag .remove:hover {
+            opacity: 1;
+        }
+
+        /* Toast Notification Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: white;
+            color: #333;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid #2ecc71;
+        }
+
+        .toast.error {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            color: #2ecc71;
+        }
+
+        .toast.error .toast-icon {
+            color: #e74c3c;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toast-close {
+            color: #666;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .toast-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .top-editor-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 0 auto 20px auto;
+            width: 100%;
+            max-width: 1200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .top-editor-container .editor-content {
+            display: flex;
+            gap: 30px;
+            margin-top: 0;
+        }
+
+        .top-editor-container .preview-section {
+            flex: 0 0 300px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .top-editor-container .preview-section.has-image {
+            border-style: solid;
+            border-color: #2ecc71;
+        }
+
+        .top-editor-container .preview-section img {
+            max-width: 100%;
+            max-height: 260px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .top-editor-container .preview-placeholder {
+            color: #adb5bd;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .top-editor-container .preview-placeholder i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .top-editor-container .editor-form {
+            flex: 1;
+        }
+
+        .top-editor-container .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .top-editor-container .form-group {
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        .top-editor-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .top-editor-container input,
+        .top-editor-container textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #495057;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .top-editor-container input:hover,
+        .top-editor-container textarea:hover {
+            border-color: #2ecc71;
+            background: white;
+        }
+
+        .top-editor-container input:focus,
+        .top-editor-container textarea:focus {
+            outline: none;
+            background: white;
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.1);
+        }
+
+        .top-editor-container .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .top-editor-container .btn-primary {
+            background: #2ecc71;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-editor-container .btn-primary:hover {
+            background: #27ae60;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
+        }
+
+        .top-editor-container .btn-primary i {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .top-editor-container {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .top-editor-container .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Top editor template colors - Form 1 */
+        .template-1-active .top-editor-container .form-group input,
+        .template-1-active .top-editor-container .form-group textarea {
+            border-color: rgba(74, 144, 226, 0.3);
+        }
+
+        .template-2-active .top-editor-container .form-group input,
+        .template-2-active .top-editor-container .form-group textarea {
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+
+        .template-3-active .top-editor-container .form-group input,
+        .template-3-active .top-editor-container .form-group textarea {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .template-4-active .top-editor-container .form-group input,
+        .template-4-active .top-editor-container .form-group textarea {
+            border-color: rgba(155, 89, 182, 0.3);
+        }
+
+        .template-5-active .top-editor-container .form-group input,
+        .template-5-active .top-editor-container .form-group textarea {
+            border-color: rgba(241, 196, 15, 0.3);
+        }
+
+        /* Top editor hover and focus states */
+        .template-1-active .top-editor-container .form-group input:hover,
+        .template-1-active .top-editor-container .form-group textarea:hover,
+        .template-1-active .top-editor-container .form-group input:focus,
+        .template-1-active .top-editor-container .form-group textarea:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            background: white;
+        }
+
+        .template-2-active .top-editor-container .form-group input:hover,
+        .template-2-active .top-editor-container .form-group textarea:hover,
+        .template-2-active .top-editor-container .form-group input:focus,
+        .template-2-active .top-editor-container .form-group textarea:focus {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+            background: white;
+        }
+
+        .template-3-active .top-editor-container .form-group input:hover,
+        .template-3-active .top-editor-container .form-group textarea:hover,
+        .template-3-active .top-editor-container .form-group input:focus,
+        .template-3-active .top-editor-container .form-group textarea:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            background: white;
+        }
+
+        .template-4-active .top-editor-container .form-group input:hover,
+        .template-4-active .top-editor-container .form-group textarea:hover,
+        .template-4-active .top-editor-container .form-group input:focus,
+        .template-4-active .top-editor-container .form-group textarea:focus {
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+            background: white;
+        }
+
+        .template-5-active .top-editor-container .form-group input:hover,
+        .template-5-active .top-editor-container .form-group textarea:hover,
+        .template-5-active .top-editor-container .form-group input:focus,
+        .template-5-active .top-editor-container .form-group textarea:focus {
+            border-color: #f1c40f;
+            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.1);
+            background: white;
+        }
+
+        /* Preview section template colors */
+        .template-1-active .top-editor-container .preview-section {
+            border-color: rgba(74, 144, 226, 0.3);
+            background: rgba(74, 144, 226, 0.05);
+        }
+
+        .template-2-active .top-editor-container .preview-section {
+            border-color: rgba(46, 204, 113, 0.3);
+            background: rgba(46, 204, 113, 0.05);
+        }
+
+        .template-3-active .top-editor-container .preview-section {
+            border-color: rgba(231, 76, 60, 0.3);
+            background: rgba(231, 76, 60, 0.05);
+        }
+
+        .template-4-active .top-editor-container .preview-section {
+            border-color: rgba(155, 89, 182, 0.3);
+            background: rgba(155, 89, 182, 0.05);
+        }
+
+        .template-5-active .top-editor-container .preview-section {
+            border-color: rgba(241, 196, 15, 0.3);
+            background: rgba(241, 196, 15, 0.05);
+        }
+
+        /* Preview image styles */
+        .top-editor-container .preview-section img {
+            max-width: 100%;
+            max-height: 260px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        /* Preview image template colors */
+        .template-1-active .top-editor-container .preview-section img {
+            border-color: rgba(74, 144, 226, 0.3);
+        }
+
+        .template-2-active .top-editor-container .preview-section img {
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+
+        .template-3-active .top-editor-container .preview-section img {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .template-4-active .top-editor-container .preview-section img {
+            border-color: rgba(155, 89, 182, 0.3);
+        }
+
+        .template-5-active .top-editor-container .preview-section img {
+            border-color: rgba(241, 196, 15, 0.3);
+        }
+
+        /* Preview image hover effects */
+        .template-1-active .top-editor-container .preview-section img:hover {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .template-2-active .top-editor-container .preview-section img:hover {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+        }
+
+        .template-3-active .top-editor-container .preview-section img:hover {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .template-4-active .top-editor-container .preview-section img:hover {
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+        }
+
+        .template-5-active .top-editor-container .preview-section img:hover {
+            border-color: #f1c40f;
+            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.1);
+        }
+
+        /* Delete Confirmation Modal */
+        .delete-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .delete-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .delete-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .delete-modal.show .delete-modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .delete-modal-icon {
+            font-size: 48px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .delete-modal-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .delete-modal-message {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .delete-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .delete-modal-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            min-width: 120px;
+        }
+
+        .delete-modal-btn.cancel {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .delete-modal-btn.delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .delete-modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .delete-modal-btn.cancel:hover {
+            background: #e2e6ea;
+        }
+
+        .delete-modal-btn.delete:hover {
+            background: #c82333;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <h1>TEMPLATE MANAGEMENT</h1>
+            </div>
+            <button class="close-btn"></button>
+        </div>
+        
+        <!-- Add New Top Edit Section -->
+        <div class="top-editor-container" id="topEditorContainer">
+            <div class="editor-content">
+                <div class="preview-section" id="topPreviewSection">
+                    <div class="preview-placeholder" id="topPreviewPlaceholder">
+                        <i class="fas fa-image"></i>
+                        <div>Preview will appear here</div>
+                        <div>after entering image URL</div>
+                    </div>
+                    <img src="" alt="Template Preview" id="topTemplatePreview" style="display: none;">
+                </div>
+                <div class="editor-form">
+                    <form id="topTemplateForm" onsubmit="saveTemplateDetails(event)">
+                        <div class="form-group">
+                            <label for="top-template-title">Template Title</label>
+                            <input type="text" id="top-template-title" placeholder="Enter template title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="top-template-image">Image URL</label>
+                            <input type="url" id="top-template-image" placeholder="Enter image URL" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="top-template-description">Description</label>
+                            <textarea id="top-template-description" rows="4" placeholder="Enter template description"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <div class="left-actions">
+                                <button type="button" class="btn btn-delete" onclick="showDeleteConfirmation()" id="deleteButton" style="display: none;">
+                                    <i class="fas fa-trash-alt"></i>
+                                    Delete
+                                </button>
+                            </div>
+                            <div class="center-actions">
+                                <button type="button" class="btn btn-secondary" onclick="closeEditor()" id="cancelButton" style="display: none;">Cancel</button>
+                            </div>
+                            <div class="right-actions">
+                                <button type="submit" class="btn btn-primary" id="topSaveButton">
+                                    <i class="fas fa-plus"></i>
+                                    Add Template
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="slider-container">
+            <button class="nav-button prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="templates-slider" id="templatesSlider">
+                <!-- Templates will be dynamically inserted here -->
+            </div>
+            <button class="nav-button next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <div class="editor-container" id="editorContainer">
+            <div class="editor-header">
+                <h2 class="editor-title" id="editorTitle">Edit Template</h2>
+                <button class="editor-close" onclick="closeEditor()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="editor-content">
+                <div class="editor-form">
+                    <form id="templateForm" onsubmit="saveTemplateDetails(event)">
+                        <div class="form-group">
+                            <label for="template-title">Template Title</label>
+                            <input type="text" id="template-title" required>
+                            <div class="help-text">Enter a descriptive title for the template</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="template-image">Image URL</label>
+                            <input type="url" id="template-image" required>
+                            <div class="help-text">Enter a valid URL for the template image</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="template-description">Description</label>
+                            <textarea id="template-description" rows="4"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="left-actions">
+                                <button type="button" class="btn btn-delete" onclick="showDeleteConfirmation()" id="deleteButton" style="display: none;">
+                                    <i class="fas fa-trash-alt"></i>
+                                    Delete
+                                </button>
+                            </div>
+                            <div class="center-actions">
+                                <button type="button" class="btn btn-secondary" onclick="closeEditor()" id="cancelButton" style="display: none;">Cancel</button>
+                            </div>
+                            <div class="right-actions">
+                                <button type="submit" class="btn btn-primary" id="saveButton">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="preview-section">
+                    <img id="template-preview" src="" alt="Template Preview">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Add Preview Modal -->
+    <div class="preview-modal" id="previewModal">
+        <div class="preview-content">
+            <div class="preview-image-container">
+                <img src="" alt="Preview" class="preview-image" id="previewImage">
+                <div class="watermark" id="watermark">
+                    <!-- Watermark spans will be added dynamically -->
+                </div>
+            </div>
+            <button class="preview-btn preview-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="preview-controls">
+                <button class="preview-btn" onclick="zoomOut()">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <button class="preview-btn reset-btn" onclick="resetZoom()">
+                    Reset
+                </button>
+                <button class="preview-btn" onclick="zoomIn()">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+                <div class="zoom-level">100%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="delete-modal" id="deleteModal">
+        <div class="delete-modal-content">
+            <div class="delete-modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="delete-modal-title">Delete Template?</h3>
+            <p class="delete-modal-message">
+                Are you sure you want to delete this template? This action cannot be undone.
+            </p>
+            <div class="delete-modal-buttons">
+                <button class="delete-modal-btn cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="delete-modal-btn delete" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Replace the static templates array with an empty array
+        let templates = [];
+
+        // Function to load templates from the database
+        async function loadTemplates() {
+            try {
+                const response = await fetch('api.php?action=get_all');
+                const result = await response.json();
+                if (result.success) {
+                    templates = result.data.map(template => ({
+                        id: parseInt(template.id),
+                        title: template.title,
+                        image: template.image_url,
+                        description: template.description || ''
+                    }));
+                    renderTemplates();
+                    updateNavButtons();
+                } else {
+                    showNotification('Error loading templates', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error loading templates', 'error');
+            }
+        }
+
+        const slider = document.getElementById('templatesSlider');
+        let currentPage = 0;
+        let currentEditingId = null;
+        let isAddingNew = false;
+
+        // Render templates
+        function renderTemplates() {
+            const addNewTemplate = {
+                id: 'new',
+                title: 'ADD NEW TEMPLATE',
+                isAdd: true
+            };
+            const allItems = [...templates, addNewTemplate];
+            const totalPages = Math.ceil(allItems.length / 2);
+            
+            const groups = [];
+            for (let i = 0; i < allItems.length; i += 2) {
+                const group = allItems.slice(i, i + 2);
+                groups.push(group);
+            }
+
+            const templateHTML = groups.map(group => `
+                <div class="template-group">
+                    ${group.map(item => `
+                <div class="template-slide">
+                    <div class="template-card ${!item.isAdd ? `template-${item.id}` : ''}">
+                                ${item.isAdd ? `
+                        <div class="add-template-card">
+                            <i class="fas fa-plus-circle add-template-icon"></i>
+                        </div>
+                        <div class="template-title">ADD NEW TEMPLATE</div>
+                                ` : `
+                                    <img src="${item.image}" alt="${item.title}" class="template-image">
+                                    <div class="template-actions">
+                                        <button class="action-btn" onclick="previewTemplate('${item.image}'); event.stopPropagation();">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn" onclick="loadTemplateToForm1(${item.id}); event.stopPropagation();">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                    <div class="template-title">${item.title}</div>
+                                `}
+                    </div>
+                </div>
+                    `).join('')}
+                </div>
+            `).join('');
+
+            slider.innerHTML = templateHTML;
+        }
+
+        // Navigation functions
+        function scrollSlider(direction) {
+            const totalPages = Math.ceil((templates.length + 1) / 2);
+            
+            if (direction === 'next' && currentPage < totalPages - 1) {
+                currentPage++;
+            } else if (direction === 'prev' && currentPage > 0) {
+                currentPage--;
+            }
+
+            slider.scrollTo({
+                left: currentPage * slider.clientWidth,
+                behavior: 'smooth'
+            });
+
+            updateNavButtons();
+        }
+
+        // Check if we should show/hide navigation buttons
+        function updateNavButtons() {
+            const prevButton = document.querySelector('.nav-button.prev');
+            const nextButton = document.querySelector('.nav-button.next');
+            const totalPages = Math.ceil((templates.length + 1) / 2);
+            
+            prevButton.style.display = currentPage <= 0 ? 'none' : 'flex';
+            nextButton.style.display = currentPage >= totalPages - 1 ? 'none' : 'flex';
+        }
+
+        // Event listeners
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            console.log('Close button clicked');
+        });
+
+        document.querySelector('.nav-button.next').addEventListener('click', () => {
+            scrollSlider('next');
+        });
+
+        document.querySelector('.nav-button.prev').addEventListener('click', () => {
+            scrollSlider('prev');
+        });
+
+        // Prevent mouse wheel scrolling
+        document.querySelector('.templates-slider').addEventListener('wheel', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.add-template-card')) {
+                // Reset Form 1 and scroll to it
+                const form = document.getElementById('topTemplateForm');
+                form.reset();
+                form.dataset.editingId = '';
+                
+                // Reset preview
+                const previewImg = document.getElementById('topTemplatePreview');
+                const placeholder = document.getElementById('topPreviewPlaceholder');
+                const previewSection = document.getElementById('topPreviewSection');
+                previewImg.style.display = 'none';
+                placeholder.style.display = 'block';
+                previewSection.classList.remove('has-image');
+                
+                // Update save button text and hide delete button
+                document.getElementById('topSaveButton').innerHTML = '<i class="fas fa-plus"></i>Add Template';
+                document.getElementById('deleteButton').style.display = 'none';
+                
+                // Scroll to Form 1
+                document.getElementById('topEditorContainer').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // Preview functionality
+        let currentZoom = 1;
+        const zoomStep = 0.1;
+        const previewModal = document.getElementById('previewModal');
+        const previewImage = document.getElementById('previewImage');
+
+        function createWatermarkGrid() {
+            const watermark = document.getElementById('watermark');
+            const text = 'Lurey_Creation@2025-26';
+            // Create 24 spans (4x6 grid)
+            for (let i = 0; i < 24; i++) {
+                const span = document.createElement('span');
+                span.textContent = text;
+                watermark.appendChild(span);
+            }
+        }
+
+        function previewTemplate(imageUrl) {
+            previewImage.src = imageUrl;
+            previewModal.style.display = 'flex';
+            resetZoom();
+            createWatermarkGrid();
+        }
+
+        function closePreview() {
+            previewModal.style.display = 'none';
+        }
+
+        function updateZoomLevel() {
+            document.querySelector('.zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
+            previewImage.style.transform = `scale(${currentZoom})`;
+        }
+
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom + zoomStep, 3);
+            updateZoomLevel();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom - zoomStep, 0.5);
+            updateZoomLevel();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            updateZoomLevel();
+        }
+
+        // Add event listeners
+        document.querySelector('.preview-close').addEventListener('click', closePreview);
+        previewModal.addEventListener('click', (e) => {
+            if (e.target === previewModal) {
+                closePreview();
+            }
+        });
+
+        // Add keyboard controls for zoom
+        document.addEventListener('keydown', (e) => {
+            if (previewModal.style.display === 'flex') {
+                if (e.key === 'Escape') closePreview();
+                if (e.key === '+' || e.key === '=') zoomIn();
+                if (e.key === '-') zoomOut();
+                if (e.key === '0') resetZoom();
+            }
+        });
+
+        function openEditor(templateId) {
+            isAddingNew = templateId === 'new';
+            currentEditingId = templateId;
+            
+            // Update form title and button text
+            document.getElementById('editorTitle').textContent = isAddingNew ? 'Add New Template' : 'Edit Template';
+            document.getElementById('saveButton').textContent = isAddingNew ? 'Add Template' : 'Save Changes';
+            
+            // Get all form inputs and textareas
+            const formFields = document.querySelectorAll('#templateForm input, #templateForm textarea');
+            const editorHeader = document.querySelector('.editor-header');
+            
+            // Remove any existing color classes from all fields and header
+            formFields.forEach(field => {
+                field.classList.remove('template-1-color', 'template-2-color', 'template-3-color', 'template-4-color', 'template-5-color');
+            });
+            editorHeader.classList.remove('template-1-color', 'template-2-color', 'template-3-color', 'template-4-color', 'template-5-color');
+            
+            if (isAddingNew) {
+                document.getElementById('template-title').value = '';
+                document.getElementById('template-image').value = '';
+                document.getElementById('template-description').value = '';
+                document.getElementById('template-preview').src = '';
+            } else {
+                const template = templates.find(t => t.id === templateId);
+                if (!template) return;
+                
+                // Add color class to all form fields and header
+                const colorClass = `template-${template.id}-color`;
+                formFields.forEach(field => {
+                    field.classList.add(colorClass);
+                });
+                editorHeader.classList.add(colorClass);
+                
+                document.getElementById('template-title').value = template.title;
+                document.getElementById('template-image').value = template.image;
+                document.getElementById('template-description').value = template.description || '';
+                document.getElementById('template-preview').src = template.image;
+            }
+            
+            // Show the editor
+            const editorContainer = document.getElementById('editorContainer');
+            editorContainer.classList.add('active');
+        }
+
+        function closeEditor() {
+            // For the editor form
+            const editorContainer = document.getElementById('editorContainer');
+            editorContainer.classList.remove('active');
+            currentEditingId = null;
+            isAddingNew = false;
+
+            // For the top form
+            resetTopForm();
+        }
+
+        function isTitleDuplicate(title, excludeId = null) {
+            return templates.some(template => 
+                template.title.toLowerCase() === title.toLowerCase() && template.id !== excludeId
+            );
+        }
+
+        function loadTemplateToForm1(templateId) {
+            const template = templates.find(t => t.id === templateId);
+            if (!template) return;
+
+            // Remove any existing template color classes from body
+            document.body.classList.remove('template-1-active', 'template-2-active', 'template-3-active', 'template-4-active', 'template-5-active');
+            // Add the current template color class
+            document.body.classList.add(`template-${templateId}-active`);
+
+            // Load template data into form
+            document.getElementById('top-template-title').value = template.title;
+            document.getElementById('top-template-image').value = template.image;
+            document.getElementById('top-template-description').value = template.description || '';
+            
+            // Update preview
+            const previewImg = document.getElementById('topTemplatePreview');
+            const placeholder = document.getElementById('topPreviewPlaceholder');
+            const previewSection = document.getElementById('topPreviewSection');
+            
+            previewImg.src = template.image;
+            previewImg.style.display = 'block';
+            placeholder.style.display = 'none';
+            previewSection.classList.add('has-image');
+            
+            // Update save button text
+            document.getElementById('topSaveButton').innerHTML = '<i class="fas fa-save"></i>Update Template';
+            
+            // Show delete and cancel buttons when editing
+            document.getElementById('deleteButton').style.display = 'block';
+            document.getElementById('cancelButton').style.display = 'block';
+            
+            // Store the editing template id
+            document.getElementById('topTemplateForm').dataset.editingId = templateId;
+            
+            // Scroll to FORM1
+            document.getElementById('topEditorContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reset template colors when closing or resetting form
+        function resetTemplateColors() {
+            document.body.classList.remove('template-1-active', 'template-2-active', 'template-3-active', 'template-4-active', 'template-5-active');
+            // Hide delete and cancel buttons when resetting
+            document.getElementById('deleteButton').style.display = 'none';
+            document.getElementById('cancelButton').style.display = 'none';
+        }
+
+        // Add event listener for form reset
+        document.getElementById('topTemplateForm').addEventListener('reset', resetTemplateColors);
+
+        // Modify saveTemplateDetails function
+        async function saveTemplateDetails(event) {
+            event.preventDefault();
+            
+            const isTopForm = event.target.id === 'topTemplateForm';
+            const editingId = isTopForm ? parseInt(event.target.dataset.editingId) : currentEditingId;
+            
+            const templateData = {
+                title: document.getElementById(isTopForm ? 'top-template-title' : 'template-title').value,
+                image: document.getElementById(isTopForm ? 'top-template-image' : 'template-image').value,
+                description: document.getElementById(isTopForm ? 'top-template-description' : 'template-description').value
+            };
+
+            try {
+                let response;
+                if (editingId) {
+                    // Update existing template
+                    response = await fetch('api.php?action=update', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: editingId,
+                            ...templateData
+                        })
+                    });
+                } else {
+                    // Create new template
+                    response = await fetch('api.php?action=create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(templateData)
+                    });
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    await loadTemplates(); // Reload templates from server
+                    
+                    // Reset forms and UI
+                    if (isTopForm) {
+                        resetTopForm();
+                    } else {
+                        closeEditor();
+                    }
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error saving template', 'error');
+            }
+        }
+
+        // Function to delete template
+        function deleteTemplate(id) {
+            templateToDelete = id;
+            showDeleteConfirmation(id);
+        }
+
+        // Add home functionality
+        function resetToHome() {
+            // Reset Form 1
+            const form = document.getElementById('topTemplateForm');
+            form.reset();
+            form.dataset.editingId = '';
+            
+            // Reset preview
+            const previewImg = document.getElementById('topTemplatePreview');
+            const placeholder = document.getElementById('topPreviewPlaceholder');
+            const previewSection = document.getElementById('topPreviewSection');
+            previewImg.style.display = 'none';
+            placeholder.style.display = 'block';
+            previewSection.classList.remove('has-image');
+            
+            // Reset save button text
+            document.getElementById('topSaveButton').innerHTML = '<i class="fas fa-plus"></i>Add Template';
+            
+            // Close editor if open
+            const editorContainer = document.getElementById('editorContainer');
+            editorContainer.classList.remove('active');
+            
+            // Reset to first page of templates
+            currentPage = 0;
+            slider.scrollTo({
+                left: 0,
+                behavior: 'smooth'
+            });
+            updateNavButtons();
+            
+            // Smooth scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Add click event to header
+        document.querySelector('.header-content').addEventListener('click', resetToHome);
+
+        // Add preview functionality for top form
+        document.getElementById('top-template-image').addEventListener('input', function(e) {
+            const imageUrl = e.target.value;
+            const previewSection = document.getElementById('topPreviewSection');
+            const previewImg = document.getElementById('topTemplatePreview');
+            const placeholder = document.getElementById('topPreviewPlaceholder');
+            
+            if (imageUrl) {
+                previewImg.src = imageUrl;
+                previewImg.onload = function() {
+                    previewImg.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    previewSection.classList.add('has-image');
+                };
+                previewImg.onerror = function() {
+                    previewImg.style.display = 'none';
+                    placeholder.style.display = 'block';
+                    previewSection.classList.remove('has-image');
+                    showNotification('Invalid image URL. Please check the URL and try again.', 'error');
+                };
+            } else {
+                previewImg.style.display = 'none';
+                placeholder.style.display = 'block';
+                previewSection.classList.remove('has-image');
+            }
+        });
+
+        // Add image URL preview functionality for edit form
+        document.getElementById('template-image').addEventListener('input', function(e) {
+            const previewImg = document.getElementById('template-preview');
+            previewImg.src = e.target.value;
+        });
+
+        function showNotification(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            // Create toast content
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                </div>
+                <div class="toast-message">${message}</div>
+                <div class="toast-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            `;
+            
+            // Add toast to container
+            toastContainer.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Add click handler for close button
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500);
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 500);
+                }
+            }, 5000);
+        }
+
+        // Delete confirmation functionality
+        let templateToDelete = null;
+
+        function showDeleteConfirmation(id) {
+            templateToDelete = id || parseInt(document.getElementById('topTemplateForm').dataset.editingId);
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.classList.add('show');
+        }
+
+        function closeDeleteModal() {
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.classList.remove('show');
+            templateToDelete = null;
+        }
+
+        // Modify confirmDelete function
+        async function confirmDelete() {
+            if (templateToDelete !== null) {
+                try {
+                    const response = await fetch(`api.php?action=delete&id=${templateToDelete}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        showNotification(result.message, 'success');
+                        await loadTemplates(); // Reload templates from server
+                        
+                        // Reset form if the deleted template was being edited
+                        resetTopForm();
+                        closeEditor();
+                    } else {
+                        showNotification(result.message, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('Error deleting template', 'error');
+                }
+                
+                closeDeleteModal();
+            }
+        }
+
+        function resetTopForm() {
+            // Reset the form
+            const form = document.getElementById('topTemplateForm');
+            form.reset();
+            form.dataset.editingId = '';
+            
+            // Reset preview
+            const previewImg = document.getElementById('topTemplatePreview');
+            const placeholder = document.getElementById('topPreviewPlaceholder');
+            const previewSection = document.getElementById('topPreviewSection');
+            previewImg.style.display = 'none';
+            placeholder.style.display = 'block';
+            previewSection.classList.remove('has-image');
+            
+            // Reset save button text
+            document.getElementById('topSaveButton').innerHTML = '<i class="fas fa-plus"></i>Add Template';
+            
+            // Hide delete and cancel buttons
+            document.getElementById('deleteButton').style.display = 'none';
+            document.getElementById('cancelButton').style.display = 'none';
+            
+            // Reset template colors
+            resetTemplateColors();
+        }
+
+        // Update the onclick handler for cancel buttons
+        document.querySelectorAll('.btn-secondary').forEach(btn => {
+            btn.onclick = function() {
+                if (this.closest('#topTemplateForm')) {
+                    resetTopForm();
+                } else {
+                    closeEditor();
+                }
+            }
+        });
+
+        // Initial render
+        renderTemplates();
+        // Initial nav button state
+        updateNavButtons();
+
+        // Load templates when the page loads
+        document.addEventListener('DOMContentLoaded', loadTemplates);
+    </script>
+</body>
+</html>
